@@ -1,0 +1,19 @@
+Package: maxmaps
+Title: What the Package Does
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does.
+Depends: R (>= 3.5.2)
+Imports:
+  rvest,
+  dplyr,
+  USAboundaries,
+  USAboundariesData,
+  sf,
+  dplyr,
+  ggplot2,
+  praise
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
