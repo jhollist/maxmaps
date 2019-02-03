@@ -1,16 +1,19 @@
 #' Capital quiz
 #'
 #' This function gives a quiz for each of the capitals based on region or regions
-#' @param regions a list of brms regions to use for quiz.  Included in
+#' @param ... a list of brms regions to use for quiz.  Included in
 #'                `states_caps`` data frame.
 #' @param type Which type of test to take, can be "mc" of "fill".  Only "fill"
 #'             is currently implemented.
 #' @import dplyr USAboundaries ggplot2
 #' @export
-captial_quiz <- function(regions = c("all","northeast","southeast", "midwest",
-                                     "southwest","west"), type = c("fill", "mc")
-                         ){
-  regions <- match.arg(regions)
+capital_quiz <- function(..., type = c("fill", "mc")){
+  regions <- unlist(list(...))
+  if(any(!regions %in% c("northeast", "southeast", "midwest",
+                        "southwest", "west"))){
+    stop('The list of regions must be one of: "northeast", "southeast",
+         "midwest","southwest", or "west"')
+  }
   type <- match.arg(type)
   #browser()
   quiz_data <- states_caps %>%
