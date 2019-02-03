@@ -8,6 +8,7 @@
 #' @import dplyr USAboundaries ggplot2
 #' @export
 capital_quiz <- function(..., type = c("fill", "mc")){
+  data("states_caps", package = "maxmaps")
   regions <- unlist(list(...))
   if(any(!regions %in% c("northeast", "southeast", "midwest",
                         "southwest", "west"))){
