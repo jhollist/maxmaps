@@ -3,7 +3,7 @@ Title: What the Package Does
 Version: 0.0.0.9000
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: What the package does.
-Depends: R (>= 3.5.2)
+Depends: R (>= 3.5.0)
 Imports:
   rvest,
   dplyr,
