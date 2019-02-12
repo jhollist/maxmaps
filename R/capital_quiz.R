@@ -39,9 +39,14 @@ capital_quiz <- function(..., type = c("fill", "mc")){
       user_answer <- readline("What is the state capital of the state shown in black? ")
       user_answers[i] <- user_answer
       if(user_answer == quiz_data[i,3]){
+
         score[i] <- 1
-        message(praise::praise(template = "Correct!, you are ${adjective}"))
-      } else {
+        if(i%%2 == 0){
+          message(praise::praise(template = "Correct!, you are ${adjective}"))
+        } else {
+          dadjoke::groan()
+        }
+        } else {
         score[i] <- 0
         message("Sorry, not quite right")
         message(paste0("You typed ", user_answer, ' and the correct answer is ',
