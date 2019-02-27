@@ -22,10 +22,15 @@ capital_quiz <- function(..., type = c("fill", "mc")){
     arrange(sample(1:nrow(.)))
   score <- vector("numeric", nrow(quiz_data))
   user_answers <- vector("character", nrow(quiz_data))
+
   for(i in seq_along(quiz_data[,1])){
     region_states <- quiz_data %>%
       filter(brms_regions == quiz_data[i,4]) %>%
       pull(state)
+    current_region <- quiz_data %>%
+      filter(brms_regions == quiz_data[i,4]) %>%
+      pull(brms_regions) %>%
+      unique()
     region <- us_boundaries(resolution = "high") %>%
       filter(name %in% region_states)
     state <- us_boundaries(resolution = "high") %>%
@@ -33,6 +38,10 @@ capital_quiz <- function(..., type = c("fill", "mc")){
     map <- ggplot(region) +
       geom_sf() +
       geom_sf(data = state, fill = "black")
+    if(current_region == "southwest"){
+      map <- map +
+        scale_x_continuous(limits = c(-180, -90))
+    }
 
     if(type == "fill"){
       print(map)
