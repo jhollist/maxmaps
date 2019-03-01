@@ -12,7 +12,8 @@ Imports:
   sf,
   dplyr,
   ggplot2,
-  praise
+  praise,
+  stringdist
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

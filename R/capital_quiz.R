@@ -21,6 +21,7 @@ capital_quiz <- function(..., type = c("fill", "mc")){
     filter(brms_regions %in% regions) %>%
     arrange(sample(1:nrow(.)))
   score <- vector("numeric", nrow(quiz_data))
+  spell_corr <- vector("numeric", nrow(quiz_data))
   user_answers <- vector("character", nrow(quiz_data))
 
   for(i in seq_along(quiz_data[,1])){
@@ -50,13 +51,23 @@ capital_quiz <- function(..., type = c("fill", "mc")){
       if(user_answer == quiz_data[i,3]){
 
         score[i] <- 1
+        spell_corr[i] <- 1
         if(i%%2 == 0){
           message(praise::praise(template = "Correct!, you are ${adjective}"))
         } else {
           dadjoke::groan()
         }
-        } else {
+        } else if(stringdist::stringsim(quiz_data[i,3], user_answer) >= 0.5){
+          score[i] <- 1
+          spell_corr[i] <- 0
+          message("That looks close, so you get a point")
+          message(paste0("You typed ", user_answer, ' and the correct answer is ',
+                         quiz_data[i,3], '.'))
+          message("Can you see the difference?")
+        }
+        else {
         score[i] <- 0
+        spell_corr[i] <- 0
         message("Sorry, not quite right")
         message(paste0("You typed ", user_answer, ' and the correct answer is ',
                       quiz_data[i,3], '.'))
@@ -71,9 +82,10 @@ capital_quiz <- function(..., type = c("fill", "mc")){
   }
   message("You are done!")
   message(paste("You got", sum(score), "out of", length(score), "correct."))
-  message(paste0("That's ", round(100*(sum(score)/length(score)), 1), "%."))
-  message("Here are the ones you didn't get this time.")
-  wrong <- data.frame(your_answers = user_answers[!score],
-             correct_answers = quiz_data[!score,3])
+  message(paste("You spelled", sum(spell_corr), "out of", length(score), "correct. And get extra credit for those."))
+  message(paste0("That's ", round(100*((sum(score)+sum(spell_corr))/length(score)), 1), "%."))
+  message("Here are the ones you didn't get perfect this time.")
+  wrong <- data.frame(your_answers = user_answers[!spell_corr],
+             correct_answers = quiz_data[!spell_corr,3])
   wrong
 }
